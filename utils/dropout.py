@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from utils import eval
+from utils import evaluation
 from tqdm.auto import tqdm
 from torch.utils.data import DataLoader, TensorDataset
 from torch.nn.utils import clip_grad_norm_
@@ -103,10 +103,10 @@ class DropoutWrapper(nn.Module):
         acc = (y_in == probas_in.argmax(-1)).float().mean().item()
 
         # Calibration Metrics
-        criterion_ece = eval.ExpectedCalibrationError()
-        criterion_nll = eval.NegativeLogLikelihood()
-        criterion_bs = eval.BrierScore()
-        criterion_cc = eval.CalibrationCurve()
+        criterion_ece = evaluation.ExpectedCalibrationError()
+        criterion_nll = evaluation.NegativeLogLikelihood()
+        criterion_bs = evaluation.BrierScore()
+        criterion_cc = evaluation.CalibrationCurve()
 
         ece = criterion_ece(probas_in, y_in)
         nll = criterion_nll(probas_in, y_in)
@@ -118,7 +118,7 @@ class DropoutWrapper(nn.Module):
         # entropy_out = -torch.sum(probas_out * probas_out.log(), dim=-1)
 
         unc_in, unc_out = -probas_in.max(1)[0], -probas_out.max(1)[0]
-        auroc = eval.get_AUROC_ood(unc_in, unc_out)
+        auroc = evaluation.get_AUROC_ood(unc_in, unc_out)
 
         results = {
             'accuracy': acc,
@@ -271,7 +271,7 @@ class DropoutWrapper(nn.Module):
         # Logging
         self.history['val_loss'].append(val_loss.item())
         self.history['val_acc'].append(val_acc.item())
-        self.history['val_auroc'].append(eval.get_AUROC_ood(unc_in, unc_out))
+        self.history['val_auroc'].append(evaluation.get_AUROC_ood(unc_in, unc_out))
 
 
 if __name__ == "__main__":

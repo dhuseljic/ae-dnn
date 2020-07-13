@@ -6,7 +6,7 @@ import numpy as np
 import pylab as plt
 
 from torch.utils.data import DataLoader, TensorDataset
-from utils import eval, ood_sampling
+from utils import evaluation, ood_sampling
 from tqdm.auto import tqdm
 from copy import deepcopy
 
@@ -115,10 +115,10 @@ class PriorNetWrapper(nn.Module):
         acc = (y_in == probas_in.argmax(-1)).float().mean().item()
 
         # Calibration Metrics
-        criterion_ece = eval.ExpectedCalibrationError()
-        criterion_nll = eval.NegativeLogLikelihood()
-        criterion_bs = eval.BrierScore()
-        criterion_cc = eval.CalibrationCurve()
+        criterion_ece = evaluation.ExpectedCalibrationError()
+        criterion_nll = evaluation.NegativeLogLikelihood()
+        criterion_bs = evaluation.BrierScore()
+        criterion_cc = evaluation.CalibrationCurve()
 
         ece = criterion_ece(probas_in, y_in)
         nll = criterion_nll(probas_in, y_in)
@@ -127,7 +127,7 @@ class PriorNetWrapper(nn.Module):
 
         # OOD metrics
         unc_in, unc_out = uncertainty_in['mutual_information'], uncertainty_out['mutual_information']
-        auroc = eval.get_AUROC_ood(unc_in, unc_out)
+        auroc = evaluation.get_AUROC_ood(unc_in, unc_out)
         entropy_in = uncertainty_in['entropy_of_expected']
         entropy_out = uncertainty_out['entropy_of_expected']
 
@@ -273,7 +273,7 @@ class PriorNetWrapper(nn.Module):
         # Logging
         self.history['val_loss'].append(val_loss.item())
         self.history['val_acc'].append(val_acc.item())
-        self.history['val_auroc'].append(eval.get_AUROC_ood(unc_in, unc_out))
+        self.history['val_auroc'].append(evaluation.get_AUROC_ood(unc_in, unc_out))
 
 
 def dirichlet_kl_divergence(alphas, target_alphas, precision=None, target_precision=None,

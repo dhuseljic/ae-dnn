@@ -2,8 +2,6 @@ import os
 import argparse
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 from utils.gan import ConditionalDCGAN
 from utils.datasets import load_mnist_notmnist, load_svhn_cifar10, load_cifar5

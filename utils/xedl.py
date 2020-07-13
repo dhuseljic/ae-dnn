@@ -12,7 +12,7 @@ from tqdm.auto import tqdm
 from torch.utils.data import DataLoader, TensorDataset
 from torch.nn.utils import clip_grad_norm_
 
-from utils import eval
+from utils import evaluation
 
 
 def __test__():
@@ -195,10 +195,10 @@ class xEDLWrapper(nn.Module):
         acc = (y_in == probas_in.argmax(-1)).float().mean().item()
 
         # Calibration Metrics
-        criterion_ece = eval.ExpectedCalibrationError()
-        criterion_nll = eval.NegativeLogLikelihood()
-        criterion_bs = eval.BrierScore()
-        criterion_cc = eval.CalibrationCurve()
+        criterion_ece = evaluation.ExpectedCalibrationError()
+        criterion_nll = evaluation.NegativeLogLikelihood()
+        criterion_bs = evaluation.BrierScore()
+        criterion_cc = evaluation.CalibrationCurve()
 
         ece = criterion_ece(probas_in, y_in)
         nll = criterion_nll(probas_in, y_in)
@@ -209,7 +209,7 @@ class xEDLWrapper(nn.Module):
         entropy_in = -torch.sum(probas_in * probas_in.log(), dim=-1)
         entropy_out = -torch.sum(probas_out * probas_out.log(), dim=-1)
         unc_in, unc_out = self.get_unc(logits_in), self.get_unc(logits_out)
-        auroc = eval.get_AUROC_ood(unc_in, unc_out)
+        auroc = evaluation.get_AUROC_ood(unc_in, unc_out)
 
         results = {
             'accuracy': acc,
@@ -326,13 +326,13 @@ class xEDLWrapper(nn.Module):
     def validation(self, val_loader_in, val_loader_out):
         self.net.eval()
 
-        (preds, unc_in), lbls = eval.eval_on_dataloader(
+        (preds, unc_in), lbls = evaluation.eval_on_dataloader(
             self.net, val_loader_in, (lambda x: x.argmax(-1), self.get_unc), return_labels=True
         )
-        unc_out = eval.eval_on_dataloader(self.net, val_loader_out, self.get_unc)
+        unc_out = evaluation.eval_on_dataloader(self.net, val_loader_out, self.get_unc)
 
         self.history['val_acc'].append((preds == lbls).float().mean(0).item())
-        self.history['val_auroc'].append(eval.get_AUROC_ood(unc_in, unc_out))
+        self.history['val_auroc'].append(evaluation.get_AUROC_ood(unc_in, unc_out))
 
     def _loss_in(self, e_in, y_in):
         """Loss types for in-distribution samples."""

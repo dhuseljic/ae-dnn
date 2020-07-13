@@ -9,7 +9,7 @@ import pylab as plt
 import pytorch_lightning as pl
 
 from torch.utils.data import DataLoader, TensorDataset
-from utils import eval
+from utils import evaluation
 from copy import deepcopy
 from tqdm.auto import tqdm
 
@@ -122,10 +122,10 @@ class EDLWrapper(nn.Module):
         acc = (y_in == probas_in.argmax(-1)).float().mean().item()
 
         # Calibration Metrics
-        criterion_ece = eval.ExpectedCalibrationError()
-        criterion_nll = eval.NegativeLogLikelihood()
-        criterion_bs = eval.BrierScore()
-        criterion_cc = eval.CalibrationCurve()
+        criterion_ece = evaluation.ExpectedCalibrationError()
+        criterion_nll = evaluation.NegativeLogLikelihood()
+        criterion_bs = evaluation.BrierScore()
+        criterion_cc = evaluation.CalibrationCurve()
 
         ece = criterion_ece(probas_in, y_in)
         nll = criterion_nll(probas_in, y_in)
@@ -134,7 +134,7 @@ class EDLWrapper(nn.Module):
 
         # OOD metrics
         unc_in, unc_out = self.get_unc(logits_in), self.get_unc(logits_out)
-        auroc = eval.get_AUROC_ood(unc_in, unc_out)
+        auroc = evaluation.get_AUROC_ood(unc_in, unc_out)
         entropy_in = -torch.sum(probas_in * probas_in.log(), dim=-1)
         entropy_out = -torch.sum(probas_out * probas_out.log(), dim=-1)
 
@@ -263,7 +263,7 @@ class EDLWrapper(nn.Module):
         # Logging
         self.history['val_loss'].append(val_loss.item())
         self.history['val_acc'].append(val_acc.item())
-        self.history['val_auroc'].append(eval.get_AUROC_ood(unc_in, unc_out))
+        self.history['val_auroc'].append(evaluation.get_AUROC_ood(unc_in, unc_out))
 
     def _edl_loss(self, evidence, y, epoch):
         """Implementation of the EDL loss

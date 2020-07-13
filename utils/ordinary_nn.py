@@ -11,10 +11,10 @@ import pytorch_lightning as pl
 from copy import deepcopy
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm.auto import tqdm
-from utils import eval
+from utils import evaluation
 
 
-def __test():
+def __test__():
     torch.manual_seed(1)
     X = torch.cat((
         torch.Tensor(50, 2).normal_(-1), torch.Tensor(50, 2).normal_(1)
@@ -100,10 +100,10 @@ class NNWrapper(nn.Module):
         acc = (y_in == probas_in.argmax(-1)).float().mean().item()
 
         # Calibration Metrics
-        criterion_ece = eval.ExpectedCalibrationError()
-        criterion_nll = eval.NegativeLogLikelihood()
-        criterion_bs = eval.BrierScore()
-        criterion_cc = eval.CalibrationCurve()
+        criterion_ece = evaluation.ExpectedCalibrationError()
+        criterion_nll = evaluation.NegativeLogLikelihood()
+        criterion_bs = evaluation.BrierScore()
+        criterion_cc = evaluation.CalibrationCurve()
 
         ece = criterion_ece(probas_in, y_in)
         nll = criterion_nll(probas_in, y_in)
@@ -112,7 +112,7 @@ class NNWrapper(nn.Module):
 
         # OOD metrics
         unc_in, unc_out = -probas_in.max(1)[0], -probas_out.max(1)[0]
-        auroc = eval.get_AUROC_ood(unc_in, unc_out)
+        auroc = evaluation.get_AUROC_ood(unc_in, unc_out)
         entropy_in = -torch.sum(probas_in * probas_in.log(), dim=-1)
         entropy_out = -torch.sum(probas_out * probas_out.log(), dim=-1)
 
@@ -253,7 +253,7 @@ class NNWrapper(nn.Module):
         # Logging
         self.history['val_loss'].append(val_loss.item())
         self.history['val_acc'].append(val_acc.item())
-        self.history['val_auroc'].append(eval.get_AUROC_ood(unc_in, unc_out))
+        self.history['val_auroc'].append(evaluation.get_AUROC_ood(unc_in, unc_out))
 
 
 class NN_lightning(pl.LightningModule):
@@ -287,4 +287,4 @@ class NN_lightning(pl.LightningModule):
 
 
 if __name__ == "__main__":
-    __test()
+    __test__()
