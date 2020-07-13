@@ -1,6 +1,5 @@
-# Separation of Aleatoric and Epistemic Uncertainty in Deterministic DNN
-Code for reproducing some key results of our ICPR 2020 paper "Separation of Aleatoric and Epistemic
-Uncertainty in Deterministic Deep Neural Networks"
+# AE-DNN
+Code for reproducing some key results of our ICPR 2020 paper *"Separation of Aleatoric and Epistemic Uncertainty in Deterministic Deep Neural Networks"*
 
 ```bash
 python experiment.py \
