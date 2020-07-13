@@ -43,7 +43,8 @@ class EnsembleWrapper(nn.Module):
         self.n_members = n_members
 
         self.nets = []
-        for _ in range(self.n_members):
+        self.nets.append(deepcopy(net))
+        for _ in range(self.n_members-1):
             net_ = copy.deepcopy(net)
             net_ = net_.apply(weight_reset)
             self.nets.append(net_)

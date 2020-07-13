@@ -42,11 +42,8 @@ def main():
 
     # Research args
     parser.add_argument('--lmb', type=float, default=0.00413)
-    parser.add_argument('--prior', type=float, default=1)
-    parser.add_argument('--loss_type_in', type=str, default='categorical')
-    parser.add_argument('--loss_type_out', type=str, default='kl')
-    parser.add_argument('--ood_factor', type=float, default=5)
     parser.add_argument('--gamma', type=float, default=1)
+    parser.add_argument('--ood_factor', type=float, default=5)
     args = parser.parse_args()
 
     run(args)
@@ -135,11 +132,11 @@ def run(args):
             else:
                 # Load ood
                 if args.dataset == 'mnist_notmnist':
-                    ood_path = '/home/denis/Documents/projects/2020_xEDL/src/notebooks/ood_models/condgan_mnist.pth'
+                    ood_path = os.path.join(file_directory, 'results', 'ood_state_dict', 'condgan_mnist.pth')
                 elif args.dataset == 'svhn_cifar10':
-                    ood_path = '/home/denis/Documents/projects/2020_xEDL/src/notebooks/ood_models/condgan_svhn.pth'
+                    ood_path = os.path.join(file_directory, 'results', 'ood_state_dict', 'condgan_svhn.pth')
                 elif args.dataset == 'cifar5_cifar5':
-                    ood_path = '/home/denis/Documents/projects/2020_xEDL/src/notebooks/ood_models/condgan_cifar5.pth'
+                    ood_path = os.path.join(file_directory, 'results', 'ood_state_dict', 'condgan_cifar5.pth')
                 n_latent = 10
                 cgan = ConditionalDCGAN(n_latent, n_channel, n_classes)
                 cgan.load_state_dict(torch.load(ood_path))
@@ -196,9 +193,6 @@ def run(args):
                 net_init,
                 lmb=args.lmb,
                 ood_generator=ood_generator,
-                prior=args.prior,
-                loss_type_in=args.loss_type_in,
-                loss_type_out=args.loss_type_out,
                 evidence_func=torch.exp
             )
 
@@ -266,14 +260,14 @@ def run(args):
     # Save model and results
     save_path = os.path.join(file_directory, 'results')
     os.makedirs(save_path, exist_ok=True)
-    weight_dict = net.state_dict()
     torch.save(
         test_results,
-        os.path.join(save_path, 'test_results_{}__{}.pth'.format(args.method_name, args.dataset))
+        os.path.join(save_path, 'test_results', '{}__{}.pth'.format(args.method_name, args.dataset))
     )
+    weight_dict = net.state_dict()
     torch.save(
         weight_dict,
-        os.path.join(save_path, 'state_dict_{}__{}.pth'.format(args.method_name, args.dataset))
+        os.path.join(save_path, 'state_dicts', '{}__{}.pth'.format(args.method_name, args.dataset))
     )
 
 
