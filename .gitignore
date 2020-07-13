@@ -2,3 +2,4 @@ results
 plots
 .idea
 .ipynb_checkpoints/
+__pycache__
