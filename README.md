@@ -1,5 +1,6 @@
 # AE-DNN
 Code for reproducing some key results of our ICPR 2020 paper *"Separation of Aleatoric and Epistemic Uncertainty in Deterministic Deep Neural Networks"*
+![](plots/circles.png)
 
 # Table of contents
 1. [Introduction](#introduction)
@@ -12,13 +13,22 @@ Code for reproducing some key results of our ICPR 2020 paper *"Separation of Ale
 
 
 ## Uncertainty Histograms<a name="unc_hist"></a>
-The first paragraph text
+### Unnormalized <a name="unnormalized"></a>
 
-#### Unnormalized <a name="unnormalized"></a>
-This is a sub paragraph, formatted in heading 3 style
+#### MNIST vs. NotMNIST
+![](plots/UC_mnist.png)
+#### SVHN vs. CIFAR10
+![](plots/UC_svhn.png)
+#### CIFAR5 vs. CIFAR5
+![](plots/UC_cifar5.png)
 
-#### Logarithmic <a name="logarithmic"></a>
-This is a sub paragraph, formatted in heading 3 style
+### Logarithmic <a name="logarithmic"></a>
+#### MNIST vs. NotMNIST
+![](plots/UC_mnist_log.png)
+#### SVHN vs. CIFAR10
+![](plots/UC_svhn_log.png)
+#### CIFAR5 vs. CIFAR5
+![](plots/UC_cifar5_log.png)
 
 ## Reproduce Results<a name="paragraph2"></a>
 ### Requirements <a name="requirements"></a>
