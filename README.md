@@ -22,9 +22,11 @@ This is a sub paragraph, formatted in heading 3 style
 
 ## Reproduce Results<a name="paragraph2"></a>
 ### Requirements <a name="requirements"></a>
+All requirements can be installed with:
 ```
 pip install -r requirements.txt
 ```
+For cuda support, please refer to https://pytorch.org/.
 
 ### Experiment <a name="Experiment"></a>
 ```bash
