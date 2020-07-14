@@ -7,9 +7,10 @@ Code for reproducing some key results of our ICPR 2020 paper *"Separation of Ale
 2. [Uncertainty Histograms](#unc_hist)
     1. [Unnormalized](#unnormalized)
     1. [Logarithmic](#logarithmic)
-3. [Reproduce](#paragraph2)
+3. [Reproduce Results](#reproduce)
     1. [Requirements](#requirements)
-    2. [Experiment](#experiment)
+    2. [Quantitative Experiment](#quantitative)
+    3. [Synthetic Experiment](#synthetic)
 
 
 ## Uncertainty Histograms<a name="unc_hist"></a>
@@ -30,7 +31,7 @@ Code for reproducing some key results of our ICPR 2020 paper *"Separation of Ale
 #### CIFAR5 vs. CIFAR5
 ![](plots/UC_cifar5_log.png)
 
-## Reproduce Results<a name="paragraph2"></a>
+## Reproduce Results<a name="reproduce"></a>
 ### Requirements <a name="requirements"></a>
 All requirements can be installed with:
 ```
@@ -38,7 +39,11 @@ pip install -r requirements.txt
 ```
 For cuda support, please refer to https://pytorch.org/.
 
-### Experiment <a name="Experiment"></a>
+Jupyter Notebooks can be opened with the bash command `jupyter notebook`.
+
+### Experiment <a name="quantitative"></a>
+
+#### Running Experiments
 ```bash
 python experiment.py \
     --n_epochs $n_epochs \
@@ -52,3 +57,12 @@ python experiment.py \
     --ood_ds $ood_ds \
     --gamma $gamma
 ```
+#### Evaluation of Experiments
+The evaluation of experiments can be done in this [Jupyter Notebook](Experiments-Quantitative.ipynb)
+
+### Synthetic <a name="synthetic"></a>
+The synthetic experiments can be found in the following Jupyter Notebooks: 
+- [Circle Example](Example-Circles.ipynb)
+- [Gaussian Distribution Example](Experiments-Quantitative.ipynb)
+
+
