@@ -5,7 +5,7 @@ Code for reproducing some key results of our ICPR 2020 paper *"Separation of Ale
 # Table of contents
 1. [Introduction](#introduction)
 2. [Uncertainty Histograms](#unc_hist)
-    1. [Unnormalized](#unnormalized)
+    1. [Normalized](#normalized)
     1. [Logarithmic](#logarithmic)
 3. [Reproduce Results](#reproduce)
     1. [Requirements](#requirements)
@@ -15,25 +15,35 @@ Code for reproducing some key results of our ICPR 2020 paper *"Separation of Ale
 
 ## Uncertainty Histograms<a name="unc_hist"></a>
 In the following plots, we can find further uncertainty histograms. In most cases, such histograms are
-representative only if we also evaluate corresponding in-distribution uncertainties.  We show unnormalized
+representative only if we also evaluate corresponding in-distribution uncertainties.  We show normalized
 uncertainty values, as well as values in logarithmic space.  This makes sense, as one may not recognize tiny
 differences in a histogram that can be used to determine a threshold for separation.
 
-### Unnormalized <a name="unnormalized"></a>
+### Normalized <a name="normalized"></a>
 
-#### MNIST vs. NotMNIST
+**MNIST vs. NotMNIST**
+
 ![](plots/UC_mnist.png)
-#### SVHN vs. CIFAR10
+
+**SVHN vs. CIFAR10**
+
 ![](plots/UC_svhn.png)
-#### CIFAR5 vs. CIFAR5
+
+**CIFAR5 vs. CIFAR5**
+
 ![](plots/UC_cifar5.png)
 
 ### Logarithmic <a name="logarithmic"></a>
-#### MNIST vs. NotMNIST
+**MNIST vs. NotMNIST**
+
 ![](plots/UC_mnist_log.png)
-#### SVHN vs. CIFAR10
+
+**SVHN vs. CIFAR10**
+
 ![](plots/UC_svhn_log.png)
-#### CIFAR5 vs. CIFAR5
+
+**CIFAR5 vs. CIFAR5**
+
 ![](plots/UC_cifar5_log.png)
 
 ## Reproduce Results<a name="reproduce"></a>
@@ -48,9 +58,9 @@ Jupyter Notebooks can be opened with the bash command `jupyter notebook`.
 
 ### Experiment <a name="quantitative"></a>
 
-#### Running Experiments
-All experimental configurations can be found in the [config file](config.yml).
+**Running Experiments:**
 
+All experimental configurations can be found in the [config file](config.yml).
 For hyperparameter optimization, we applied Bayesian optimization. The results are published in the paper and
 can be reproduced with the following command:
 ```bash
@@ -68,12 +78,11 @@ python experiment.py \
     --ood_ds $ood_ds
 ```
 
-#### Evaluation of Experiments
+**Evaluation of Experiments:**
+
 The evaluation of experiments can be obtained in this [Jupyter Notebook](Experiments-Quantitative.ipynb).
 
 ### Synthetic <a name="synthetic"></a>
 The synthetic experiments can be found in the following Jupyter Notebooks: 
 - [Circle Example](Example-Circles.ipynb)
 - [Gaussian Distribution Example](Experiments-Quantitative.ipynb)
-
-
