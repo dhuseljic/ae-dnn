@@ -1,0 +1,23 @@
+mnist_notmnist:
+  lmb: 0.024993225630577667
+  gamma: 4.412420740811563
+  dropout_rate: 0.494536854335413
+  ood_factor: 8.744768627798972
+  weight_decay: 1e-3
+  lr: 1e-3
+
+svhn_cifar10:
+  lmb: 0.09091423290277234
+  gamma: 1.3686354122657254
+  dropout_rate: 0.4967986749674353
+  ood_factor: 7.983537654015671
+  weight_decay: 1e-3
+  lr: 1e-3
+
+cifar5_cifar5:
+  lmb: 0.0424033868117946
+  gamma: 1.19837157356348361
+  dropout_rate: 0.4333476197349853
+  ood_factor: 9.109619573490875
+  weight_decay: 1e-3
+  lr: 1e-3

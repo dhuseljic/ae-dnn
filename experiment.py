@@ -32,7 +32,7 @@ def main():
     parser.add_argument('--random_state', type=int, default=1)
     parser.add_argument('--device', type=str, default=None)
 
-    parser.add_argument('--method_name', type=str, default='priornet')
+    parser.add_argument('--method_name', type=str, default='dropout')
     parser.add_argument('--dataset', type=str, default='mnist_notmnist')
 
     parser.add_argument('--batch_size', type=int, default=256)
@@ -41,8 +41,9 @@ def main():
     parser.add_argument('--ood_ds', type=int, default=0)
 
     # Research args
-    parser.add_argument('--lmb', type=float, default=0.00413)
+    parser.add_argument('--lmb', type=float, default=0.004)
     parser.add_argument('--gamma', type=float, default=1)
+    parser.add_argument('--dropout_rate', type=float, default=.5)
     parser.add_argument('--ood_factor', type=float, default=5)
     args = parser.parse_args()
 
@@ -50,7 +51,6 @@ def main():
 
 
 def run(args):
-    device = args.device
     print(vars(args))
     torch.manual_seed(args.random_state)
     torch.backends.cudnn.deterministic = True
@@ -62,21 +62,21 @@ def run(args):
         n_classes = 10
         net_list = [LeNet5(n_channel, n_classes) for _ in range(args.n_reps)]
         if args.method_name == 'dropout':
-            net_list = [LeNet5Dropout(n_channel, n_classes) for _ in range(args.n_reps)]
+            net_list = [LeNet5Dropout(n_channel, n_classes, args.dropout_rate) for _ in range(args.n_reps)]
         train_ds, val_ds_in, val_ds_out, test_ds_in, test_ds_out = load_mnist_notmnist()
     elif args.dataset == 'svhn_cifar10':
         n_channel = 3
         n_classes = 10
         net_list = [LeNet5(n_channel, n_classes) for _ in range(args.n_reps)]
         if args.method_name == 'dropout':
-            net_list = [LeNet5Dropout(n_channel, n_classes) for _ in range(args.n_reps)]
+            net_list = [LeNet5Dropout(n_channel, n_classes, args.dropout_rate) for _ in range(args.n_reps)]
         train_ds, val_ds_in, val_ds_out, test_ds_in, test_ds_out = load_svhn_cifar10()
     elif args.dataset == 'cifar5_cifar5':
         n_channel = 3
         n_classes = 5
         net_list = [LeNet5(n_channel, n_classes) for _ in range(args.n_reps)]
         if args.method_name == 'dropout':
-            net_list = [LeNet5Dropout(n_channel, n_classes) for _ in range(args.n_reps)]
+            net_list = [LeNet5Dropout(n_channel, n_classes, args.dropout_rate) for _ in range(args.n_reps)]
         train_ds, val_ds_in, val_ds_out, test_ds_in, test_ds_out = load_cifar5()
 
     train_loader = DataLoader(train_ds, batch_size=args.batch_size,

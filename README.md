@@ -14,6 +14,11 @@ Code for reproducing some key results of our ICPR 2020 paper *"Separation of Ale
 
 
 ## Uncertainty Histograms<a name="unc_hist"></a>
+In the following plots, we can find further uncertainty histograms. In most cases, such histograms are
+representative only if we also evaluate corresponding in-distribution uncertainties.  We show unnormalized
+uncertainty values, as well as values in logarithmic space.  This makes sense, as one may not recognize tiny
+differences in a histogram that can be used to determine a threshold for separation.
+
 ### Unnormalized <a name="unnormalized"></a>
 
 #### MNIST vs. NotMNIST
@@ -44,21 +49,27 @@ Jupyter Notebooks can be opened with the bash command `jupyter notebook`.
 ### Experiment <a name="quantitative"></a>
 
 #### Running Experiments
+All experimental configurations can be found in the [config file](config.yml).
+
+For hyperparameter optimization, we applied Bayesian optimization. The results are published in the paper and
+can be reproduced with the following command:
 ```bash
 python experiment.py \
-    --n_epochs $n_epochs \
-    --n_reps $n_reps \
+    --n_epochs 50  \
+    --n_reps 5 \
     --lmb $lmb \
+    --gamma $gamma \
+    --dropout_rate $dropout_rate \
     --ood_factor $ood_factor \
     --lr $lr \
     --weight_decay $weight_decay \
     --method_name $method_name \
     --dataset $dataset \
-    --ood_ds $ood_ds \
-    --gamma $gamma
+    --ood_ds $ood_ds
 ```
+
 #### Evaluation of Experiments
-The evaluation of experiments can be done in this [Jupyter Notebook](Experiments-Quantitative.ipynb)
+The evaluation of experiments can be obtained in this [Jupyter Notebook](Experiments-Quantitative.ipynb).
 
 ### Synthetic <a name="synthetic"></a>
 The synthetic experiments can be found in the following Jupyter Notebooks: 
